@@ -41,13 +41,19 @@ if [ ! -z ${HDFS_HOST} ]; then
   # Create mount point
   mkdir -p ${LOCKSS_SOLR_HDFSMNT}
 
-  # Attempt to mount HDFS sealed WARCs to OpenWayback watch directory
+  # Attempt to mount HDFS sealed WARCs to EDINA indexer watch directory
   hadoop-fuse-dfs "dfs://${HDFS_HOST:-localhost}:${HDFS_FSMD:-9000}/" ${LOCKSS_SOLR_HDFSMNT}
 
   # Ensure the sealed directory exists (-p doesn't work - only used here so that mkdir is quiet if the directory already exists)
   mkdir -p ${LOCKSS_SOLR_HDFSMNT}/${REPO_BASEDIR}
   mkdir -p ${LOCKSS_SOLR_HDFSMNT}/${REPO_BASEDIR}/sealed
 fi
+
+# Indefinitely touch new files that show up in the watched directory to trigger a filesystem event in the EDINA indexer
+while true; do
+    find ${LOCKSS_SOLR_WATCHDIR} -newermt "-${LOCKSS_SOLR_WATCHDIR_INTERVAL} seconds" -type f -exec touch {} +
+    sleep ${LOCKSS_SOLR_WATCHDIR_INTERVAL}
+done &
 
 # Start the EDINA indexer
 java -jar /lockss-solr/build/libs/lockss-solr-all-1.0-SNAPSHOT.jar

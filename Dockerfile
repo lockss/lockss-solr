@@ -39,3 +39,4 @@ RUN gradle fatJar
 
 # Add entrypoint shell script
 ADD scripts/init.sh /init.sh
+ADD scripts/watchdir.sh /watchdir.sh

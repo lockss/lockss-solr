@@ -49,11 +49,8 @@ if [ ! -z ${HDFS_HOST} ]; then
   mkdir -p ${LOCKSS_SOLR_HDFSMNT}/${REPO_BASEDIR}/sealed
 fi
 
-# Indefinitely touch new files that show up in the watched directory to trigger a filesystem event in the EDINA indexer
-while true; do
-    find ${LOCKSS_SOLR_WATCHDIR} -newermt "-${LOCKSS_SOLR_WATCHDIR_INTERVAL} seconds" -type f -exec touch {} +
-    sleep ${LOCKSS_SOLR_WATCHDIR_INTERVAL}
-done &
+# Indefinitely touch new files that show up in the watched directory
+/watchdir.sh &
 
 # Start the EDINA indexer
 java -jar /lockss-solr/build/libs/lockss-solr-all-1.0-SNAPSHOT.jar

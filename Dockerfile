@@ -8,8 +8,8 @@ ENTRYPOINT ["/init.sh"]
 # Install Cloudera CDH5 RPM repository
 RUN rpm --import https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/RPM-GPG-KEY-cloudera
 # RUN curl -o /etc/yum.repos.d/cloudera-cdh5.repo https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/cloudera-cdh5.repo
-# ADD https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/cloudera-cdh5.repo /etc/yum.repos.d/cloudera-cdh5.repo
-ADD cloudera/cloudera-cdh5.repo /etc/yum.repos.d/cloudera-cdh5.repo
+ADD https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/cloudera-cdh5.repo /etc/yum.repos.d/cloudera-cdh5.repo
+# ADD cloudera/cloudera-cdh5.repo /etc/yum.repos.d/cloudera-cdh5.repo
 
 # Install and update packages
 RUN yum -y install hadoop-hdfs-fuse java-1.8.0-openjdk-devel unzip

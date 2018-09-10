@@ -33,7 +33,7 @@ public class SolrIndexer {
         this.record = record;
         this.payload = record.getPayload();
         solrDoc = new SolrInputDocument();
-        httpHeaders = new HashMap<>();
+        httpHeaders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         getHeaders();
         // The Content-Type header can have all sorts of information about the character set, etc. This needs to be
         // stripped so that the string matching works. An alternative is using regex but that is liable to get ugly.
